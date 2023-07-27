@@ -1,0 +1,32 @@
+-- author: Amin Farjadi (github.com/amin-farjadi) (linkedin.com/in/aminfarjadi)
+-- date: 2023-07-26
+-- inspired by: https://www.citusdata.com/blog/2017/07/16/customizing-my-postgres-shell-using-psqlrc/
+
+
+\set QUIET 1
+\pset null '(null)'
+
+-- https://www.postgresql.org/docs/current/app-psql.html#APP-PSQL-PROMPTING
+-- default prompt: '%/%R%x%# '
+-- \033[1m is ANSI escape code for bold text. \033[0m resets text formatting
+-- \033[1;Xm where X is to be replaced with colour codes to change color of prompt
+-- if X is 33;40 it makes the prompt yellow (33) on black (40)
+
+\set PROMPT1 '%[%033[1;33;40m%]%M %n@%/%R%x%# '
+
+-- SELECT * FROM<enter>. %R shows what type of input it expects.
+\set PROMPT2 '... > '
+
+-- Show how long each query takes to execute
+\timing
+
+-- Use best available output format
+\x auto
+\set VERBOSITY verbose
+\set HISTFILE ~/.psql_history- :DBNAME
+\set HISTCONTROL ignoredups
+\set COMP_KEYWORD_CASE upper
+\unset QUIET
+
+-- showsrc variable retrieves the source code of all user-defined functions (stored procedures) in database
+\set showsrc 'SELECT pg_catalog.pg_namespace.nspname AS schema, pg_catalog.pg_proc.proname AS name, pg_catalog.pg_proc.prosrc AS source FROM pg_catalog.pg_proc JOIN pg_catalog.pg_namespace ON pg_catalog.pg_proc.pronamespace = pg_catalog.pg_namespace.oid WHERE pg_catalog.pg_namespace.nspname NOT IN (\'pg_catalog\', \'information_schema\');'
