@@ -6,7 +6,6 @@ function fish_prompt
     set -l last_status $status
 
     set -l normal (set_color normal)
-    set -l usercolor (set_color $fish_color_user)
 
     set -l delim \U276F
     # If we don't have unicode use a simpler delimiter
@@ -68,9 +67,9 @@ function fish_right_prompt
 
     set -l duration "$cmd_duration$CMD_DURATION"
     if test $duration -gt 60000
-        set -l duration_in_minutes (math -s N $duration / 60000)
-        set -l duration_in_seconds (math -s N*(1- $duration_in_minutes))s
-        set duration "$duration_in_minutes"m, "$duration_in_seconds"
+        set -l duration_in_minutes (math -s 0 $duration / 60000)
+        set -l duration_in_seconds (math -s 0 $duration / 1000 - $duration_in_minutes x 60)
+        set duration "$duration_in_minutes"m,"$duration_in_seconds"s
     else if test $duration -gt 100
         set duration (math $duration / 1000)s
     else
